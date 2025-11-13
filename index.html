@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jacob Jones — Product Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,700;1,700&family=IBM+Plex+Serif:wght@700&family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        ibm: ['\"IBM Plex Sans\"', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                        serif: ['\"IBM Plex Serif\"', 'serif']
+                    },
+                    colors: {
+                        jacBlack: '#141313',
+                        jacText: '#060200'
+                    },
+                    letterSpacing: {
+                        hero: '-0.48px'
+                    },
+                    keyframes: {
+                        twinkle: {
+                            '0%': { opacity: 0.4, transform: 'scale(0.95)' },
+                            '100%': { opacity: 1, transform: 'scale(1.05)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        }
+                    },
+                    animation: {
+                        twinkle: 'twinkle 1.8s ease-in-out infinite alternate',
+                        float: 'float 6s ease-in-out infinite'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .font-ibm-regular { font-family: 'IBM Plex Sans', sans-serif; font-weight: 400; }
+        .font-ibm-medium { font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; }
+        .font-ibm-bold { font-family: 'IBM Plex Sans', sans-serif; font-weight: 700; }
+        .font-ibm-bold-italic { font-family: 'IBM Plex Sans', sans-serif; font-weight: 700; font-style: italic; }
+        .font-poppins-medium { font-family: 'Poppins', sans-serif; font-weight: 500; }
+        .font-plex-serif { font-family: 'IBM Plex Serif', serif; font-weight: 700; }
+
+        .nav-link {
+            position: relative;
+            padding-left: 18px;
+            text-align: left;
+            opacity: 0.6;
+            transition: opacity .02s ease, transform .02s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        .nav-link.is-active {
+            opacity: 1;
+            font-weight: 700;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+        .reveal.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .sidebar-shell {
+            position: relative;
+            transition: background 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
+        }
+        .sidebar-shell::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+            transition: opacity 0.5s ease;
+        }
+        .sidebar-shell.is-scrolled {
+            background: linear-gradient(200deg, rgba(20, 19, 19, 0.96), rgba(11, 11, 11, 0.92));
+            box-shadow: 0 22px 46px rgba(20, 19, 19, 0.45);
+            transform: translateY(-6px);
+        }
+        .sidebar-shell.is-scrolled::after {
+            opacity: 1;
+        }
+        .sidebar-nav {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 1023px) {
+            body {
+                padding-left: 0 !important;
+            }
+
+            .sidebar-shell {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-radius: 0 0 32px 32px;
+                padding: 24px 20px 32px;
+                box-shadow: none;
+                transform: none !important;
+            }
+
+            .sidebar-shell::after {
+                display: none;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 12px 18px;
+            }
+
+            .nav-link {
+                padding-left: 0;
+            }
+
+            .sidebar-nav__indicator {
+                display: none;
+            }
+
+            .min-h-screen {
+                padding-top: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-jacText font-ibm-regular selection:bg-jacBlack/10 pl-[285px]">
+    <div class="min-h-screen flex flex-col md:flex-row">
+        <!-- Sidebar -->
+        <aside data-sidebar class="sidebar-shell bg-jacBlack text-white w-[285px] flex flex-col justify-between px-12 md:px-12 lg:px-16 py-12 md:py-14 fixed left-0 top-0 h-screen z-30">
+            <div class="space-y-16">
+                <div>
+                    <p class="font-plex-serif text-[30px] leading-none tracking-[0.2px]">S/C.</p>
+                </div>
+                <nav id="sidebar-nav" aria-label="Primary" class="sidebar-nav flex flex-col gap-12 uppercase text-[20px] leading-[30px]">
+                    <span class="sidebar-nav__indicator" id="sidebar-nav-indicator" aria-hidden="true"></span>
+                    <a class="nav-link focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:opacity-90" href="#home" data-target="home">Home</a>
+                    <a class="nav-link focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:opacity-90" href="#about" data-target="about">About</a>
+                    <a class="nav-link focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:opacity-90" href="#education" data-target="education">Education</a>
+                    <a class="nav-link focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:opacity-90" href="#journey" data-target="journey">Journey</a>
+                    <a class="nav-link focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:opacity-90" href="#skills" data-target="skills">Skills</a>
+                    <a class="nav-link focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:opacity-90" href="#works" data-target="works">Works</a>
+                    <a class="nav-link focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 hover:opacity-90" href="#contact" data-target="contact">Contact</a>
+                </nav>
+            </div>
+            <div class="space-y-16">
+                <div class="flex items-center gap-6">
+                    <a href="https://www.google.com" target="_blank" rel="noreferrer" aria-label="Google" class="transition-transform hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40">
+                        <img src="https://cdn.simpleicons.org/google/FFFFFF" alt="Google icon" class="w-10 h-10">
+                    </a>
+                    <a href="https://www.behance.net" target="_blank" rel="noreferrer" aria-label="Behance" class="transition-transform hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40">
+                        <img src="https://cdn.simpleicons.org/behance/FFFFFF" alt="Behance icon" class="w-10 h-10">
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" class="transition-transform hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40">
+                        <img src="https://cdn.simpleicons.org/instagram/FFFFFF" alt="Instagram icon" class="w-10 h-10">
+                    </a>
+                </div>
+                <p class="text-sm leading-[22px] text-white/70 whitespace-pre-line">Copyright ©2023 Jacob Jones.
+All right reserved.</p>
+            </div>
+        </aside>
+
+        <!-- Hero -->
+        <main id="home" data-section class="relative flex-1 overflow-hidden min-h-screen flex items-center">
+            <div class="absolute inset-0 bg-white pointer-events-none"></div>
+
+            <!-- Decorative mesh -->
+            <div class="hero-mesh">
+                <span class="hero-mesh__shape hero-mesh__shape--1" aria-hidden="true"></span>
+                <span class="hero-mesh__shape hero-mesh__shape--2" aria-hidden="true"></span>
+                <span class="hero-mesh__shape hero-mesh__shape--3" aria-hidden="true"></span>
+                <span class="hero-mesh__shape hero-mesh__shape--4" aria-hidden="true"></span>
+                <img src="assets/AAA.png" alt="Portrait of Skyler" class="absolute left-[11%] top-0 w-[520px] max-w-none h-[690px] object-cover drop-shadow-[0_30px_60px_rgba(20,19,19,0.25)] rounded-[32px]">
+            </div>
+
+            <!-- Floating stars -->
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='gold' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9 12 2'/></svg>" alt="" class="absolute right-[160px] top-[110px] w-[28px] h-[28px] animate-twinkle">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='gold' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9 12 2'/></svg>" alt="" class="absolute left-[18%] bottom-[18%] w-[22px] h-[22px] animate-twinkle delay-200">
+
+            <!-- Vertical socials -->
+            <div class="hidden lg:flex flex-col items-center gap-12 absolute right-[2%] top-1/3">
+                <button class="transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-jacBlack/40 rounded-full" aria-label="Instagram">
+                    <img src="https://cdn.simpleicons.org/instagram/000000" alt="Instagram icon" class="w-10 h-10">
+                </button>
+                <button class="transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-jacBlack/40 rounded-full" aria-label="Behance">
+                    <img src="https://cdn.simpleicons.org/behance/000000" alt="Behance icon" class="w-10 h-10">
+                </button>
+                <button class="transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-jacBlack/40 rounded-full" aria-label="Google">
+                    <img src="https://cdn.simpleicons.org/google/000000" alt="Google icon" class="w-10 h-10">
+                </button>
+                <div class="w-[131px] h-px bg-jacBlack/20" aria-hidden="true"></div>
+            </div>
+
+            <section class="relative max-w-[600px] px-8 md:px-16 lg:px-24 pt-16 pb-20 md:pt-32">
+                <div class="absolute -left-6 md:left-10 top-20 w-[250px] h-[60px] rotate-[330deg] opacity-80 pointer-events-none bg-gradient-to-r from-purple-200/60 via-pink-200/50 to-orange-200/40 rounded-full blur-sm"></div>
+                <header class="space-y-12">
+                    <h1 class="font-poppins-medium uppercase text-[12vw] md:text-[102px] leading-[1.05] md:leading-[90px] tracking-tighter reveal">
+                        <span class="block font-ibm-regular not-italic text-jacText">My name</span>
+                        <span class="block font-ibm-regular not-italic">is <span class="font-ibm-bold">Skyler</span></span>
+                        <span class="block font-ibm-bold not-italic">Chu...</span>
+                    </h1>
+                    <p class="text-jacText text-[6vw] md:text-[32px] md:leading-[32px] tracking-hero reveal">
+                        <span class="font-ibm-bold-italic italic">Freshman </span>
+                        <span class="font-ibm-regular not-italic"> @ </span>
+                        <span class="font-ibm-bold-italic italic">UBC Sauder</span>
+                    </p>
+                    <button id="cta" class="group inline-flex items-center gap-3 bg-jacBlack text-white px-9 md:px-10 py-4 h-[56px] rounded-[2px] transition-all duration-200 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-jacBlack/40 reveal">
+                        <span class="font-ibm-medium text-[18px] leading-[24px]">Let’s talk with me</span>
+                        <span class="relative size-6 flex items-center justify-center overflow-hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" class="w-6 h-6 transition-transform duration-200 group-hover:translate-x-1">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </span>
+                    </button>
+                </header>
+
+                <div class="mt-14 flex flex-col sm:flex-row gap-10 text-[18px] leading-[24px] text-jacText reveal">
+                    <a href="tel:+12368884595" class="flex items-center gap-4 transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-jacBlack/30 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8 text-jacBlack">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        <span class="font-ibm-bold-italic italic whitespace-nowrap">(236) 888 4595</span>
+                    </a>
+                    <a href="mailto:jacob360@gmail.com" class="flex items-center gap-4 transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-jacBlack/30 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8 text-jacBlack">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span class="font-ibm-bold-italic italic">skyler070412@gmail.com</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Anchor sections for smooth-scroll targets -->
+    <section id="about" data-section class="px-8 md:px-16 lg:px-32 py-20 md:py-28 bg-white">
+        <div class="max-w-6xl mx-auto grid gap-16 lg:grid-cols-[420px,1fr] items-start">
+            <div class="space-y-10 reveal">
+                <div class="relative rounded-[32px] bg-gradient-to-br from-[#f6f3ff] via-white to-[#fef8f3] shadow-[0_20px_60px_rgba(20,19,19,0.12)] overflow-hidden">
+                    <span aria-hidden="true" class="decorative-dots absolute -left-10 top-1/3 w-24 h-32 opacity-70"></span>
+                    <span aria-hidden="true" class="decorative-dots absolute -right-6 bottom-10 w-20 h-28 opacity-50"></span>
+                    <img src="assets/helmet.png" alt="Portrait of Skyler Chu" class="w-full h-[430px] object-cover object-top rounded-[32px]" loading="lazy">
+                </div>
+                <div class="text-center space-y-4">
+                    <p class="text-gradient text-[40px] leading-tight uppercase">Skyler Chu</p>
+                    <p class="font-ibm-regular text-lg text-jacBlack/80">
+                        <span class="font-ibm-bold-italic italic"> </span>
+                        <span class="font-ibm-regular not-italic">   </span>
+                        <span class="font-ibm-bold-italic italic"> </span>
+                    </p>
+                    <a href="#" class="inline-flex items-center gap-3 bg-white border border-jacBlack/10 px-8 py-4 rounded-full text-jacBlack hover:-translate-y-0.5 transition-transform duration-200 shadow-[0_10px_30px_rgba(20,19,19,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-jacBlack/30">
+                        <span class="font-ibm-medium text-[18px] underline decoration-2 decoration-jacBlack/50">Download CV</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="space-y-14">
+                <header class="space-y-4 reveal">
+                    <span class="inline-block font-ibm-bold-italic italic text-sm tracking-[0.2em] uppercase text-jacBlack/60">Nice to meet you!</span>
+                    <h2 class="font-poppins-medium text-[40px] md:text-[52px] leading-[1.1] uppercase text-jacText">Welcome to my world</h2>
+                    <p class="text-lg leading-8 text-jacText/80 max-w-2xl">
+                        Hello there! My name is <span class="font-ibm-bold text-jacBlack">Skyler Chu</span>.
+                        I’m a first-year student at the UBC Sauder School of Business, specializing in Business and Computer Science (BUCS). 
+                        I am passionate about integrating technology into business to solve real-world problems.
+                         I’m currently building skills in finance, analytics, and software tools to prepare for future roles at the intersection of business and technology
+                    
+                    </p>
+                </header>
+
+                <div class="grid gap-6 md:grid-cols-2 reveal">
+                    <div class="about-card">
+                        <div class="flex items-center gap-4">
+                            <span class="about-card__icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                </svg>
+                            </span>
+                            <span class="font-ibm-bold-italic italic text-jacBlack text-base">(236) 888 4595</span>
+                        </div>
+                    </div>
+                    <div class="about-card">
+                        <div class="flex items-center gap-4">
+                            <span class="about-card__icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                </svg>
+                            </span>
+                            <span class="font-ibm-bold-italic italic text-jacBlack text-base">Computer Science + Business </span>
+                        </div>
+                    </div>
+                    <div class="about-card">
+                        <div class="flex items-center gap-4">
+                            <span class="about-card__icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </span>
+                            <span class="font-ibm-bold-italic italic text-jacBlack text-base">skyler070412@gmail.com</span>
+                        </div>
+                    </div>
+                    <div class="about-card">
+                        <div class="flex items-center gap-4">
+                            <span class="about-card__icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </span>
+                            <span class="font-ibm-bold-italic italic text-jacBlack text-base">Based in Vancouver, BC</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card w-full">
+                    <div class="flex items-center gap-5">
+                        <span class="metric-card__value">3</span>
+                        <p class="font-ibm-bold-italic italic text-sm uppercase tracking-[0.2em] text-jacBlack/70">
+                            Languages <br> spoken
+                        </p>
+                    </div>
+                    <p class="text-sm leading-6 text-jacBlack/70">
+                        Fluent in English, Mandarin, and Vietnamese — enabling cross-cultural communication and collaboration across worldwide.
+                    </p>
+                </div>
+
+                <figure class="quote-card reveal">
+                    <span class="quote-card__icon" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-12 h-12 text-white/90">
+                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.996 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.984zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                        </svg>
+                    </span>
+                    <blockquote class="text-lg leading-8 text-white/90">
+                        “Design is the quiet articulation of intent. My process is equal parts curiosity, systems thinking,
+                        and relentless iteration—so the work not only looks impeccable, it simply works.”
+                    </blockquote>
+                </figure>
+            </div>
+        </div>
+        
+    </section>
+
+    <section id="education" data-section class="education-section px-8 md:px-16 lg:px-32 py-20 md:py-32 relative overflow-hidden">
+        <div class="education-section__glow" aria-hidden="true"></div>
+
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <span class="inline-block font-ibm-bold-italic italic text-sm uppercase tracking-[0.3em] text-jacBlack/60 mb-4">Academic Path</span>
+            <h2 class="font-poppins-medium text-[40px] md:text-[56px] leading-tight text-jacText uppercase">
+                Educational Background
+            </h2>
+            <p class="font-ibm-regular text-lg text-jacBlack/70 mt-4 max-w-3xl mx-auto">
+                Completing the IB Diploma across AISVN and SSIS, building the foundation for my university studies in business and technology 
+            </p>
+        </div>
+
+        <div class="education-grid max-w-4xl mx-auto mt-16 relative z-10">
+            <article class="education-card">
+                <div class="education-card__bar">
+                    <span>2019</span>
+                    <span>mid 2023</span>
+                </div>
+                <header class="education-card__header">
+                    <div class="education-card__icon" aria-hidden="true">
+                        <img src="assets/aisvn.jpg" alt="AISVN crest">
+                    </div>
+                    <div>
+                        <h3 class="education-card__title">American International School Vietnam (AISVN)</h3>
+                        <p class="education-card__location">Ho Chi Minh City • Middle & High School</p>
+                    </div>
+                    <span class="education-card__timeline">2019 – mid 2023</span>
+                </header>
+                <p class="education-card__copy">
+                    Built a strong academic foundation in IB-aligned coursework through MYP.
+                </p>
+             
+            </article>
+            <div class="education-arrow" aria-hidden="true">
+                <svg width="90" height="26" viewBox="0 0 90 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 13H66" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M60 5L74 13L60 21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <article class="education-card">
+                <div class="education-card__bar">
+                    <span>mid 2023</span>
+                    <span>2025</span>
+                </div>
+                <header class="education-card__header">
+                    <div class="education-card__icon" aria-hidden="true">
+                        <img src="assets/ssis.webp" alt="SSIS crest">
+                    </div>
+                    <div>
+                        <h3 class="education-card__title">South Saigon International School (SSIS)</h3>
+                        <p class="education-card__location">Ho Chi Minh City • Grade 11 Transfer</p>
+                    </div>
+                    <span class="education-card__timeline">mid 2023 – 2025</span>
+                </header>
+                <p class="education-card__copy">
+                    Continued the IB Diploma Programme at SSIS, and adapted to a new academic environment.
+                </p>
+                 
+            </article>
+            <div class="education-arrow" aria-hidden="true">
+                <svg width="90" height="26" viewBox="0 0 90 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 13H66" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M60 5L74 13L60 21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <article class="education-card education-card--featured">
+                <div class="education-card__bar education-card__bar--active">
+                    <span>Fall 2025</span>
+                    <span>Present</span>
+                </div>
+                <header class="education-card__header">
+                    <img src="assets/UBC%20Logo.png" alt="UBC crest" class="education-card__logo" aria-hidden="true">
+                    <div>
+                        <h3 class="education-card__title">University of British Columbia (UBC) — Sauder</h3>
+                        <p class="education-card__location">Vancouver, Canada • BUCS Program</p>
+                    </div>
+                    <span class="education-card__timeline">Fall 2025 – Present</span>
+                </header>
+                <p class="education-card__copy">
+                    Pursuing the BUCS program, focusing on the intersection of business, data, and technology
+                </p>
+                
+            </article>
+        </div>
+    </section>
+
+    <section id="journey" data-section class="px-8 md:px-16 lg:px-32 py-20 md:py-28 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <header class="text-center mb-16 reveal">
+                <span class="inline-block font-ibm-bold-italic italic text-sm uppercase tracking-[0.3em] text-jacBlack/60 mb-4">My Journey</span>
+                <h2 class="font-poppins-medium text-[40px] md:text-[56px] leading-tight text-jacText uppercase">
+                    Timeline
+                </h2>
+            </header>
+
+            <div class="timeline-container">
+                <!-- Timeline Line -->
+                <div class="timeline-line" aria-hidden="true">
+                    <div class="timeline-line__progress" id="timeline-progress"></div>
+                </div>
+
+                <!-- Timeline Items -->
+                <div class="timeline-items">
+                    <div class="timeline-item" data-timeline-item>
+                        <div class="timeline-item__marker">
+                            <div class="timeline-item__dot"></div>
+                        </div>
+                        <div class="timeline-item__content">
+                            <div class="timeline-item__date">2025 Sep - Present</div>
+                            <h3 class="timeline-item__title">Freshman at UBC Sauder</h3>
+                            <p class="timeline-item__description">
+                                Starting my journey in Business and Computer Science (BUCS) program, exploring the intersection of technology and business.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-timeline-item>
+                        <div class="timeline-item__marker">
+                            <div class="timeline-item__dot"></div>
+                        </div>
+                        <div class="timeline-item__content">
+                            <div class="timeline-item__date">2025 Oct</div>
+                            <h3 class="timeline-item__title">First Hackathon at UBC</h3>
+                            <p class="timeline-item__description">
+                                Developed <b>Argon</b>, a web app created during my first UBC hackathon, where I learned collaborative problem-solving and rapid prototyping. </p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item" data-timeline-item>
+                        <div class="timeline-item__marker">
+                            <div class="timeline-item__dot"></div>
+                        </div>
+                        <div class="timeline-item__content">
+                            <div class="timeline-item__date">2025 Oct</div>
+                            <h3 class="timeline-item__title">Joined UBCTA Executive Team</h3>
+                            <p class="timeline-item__description">
+                                My first leadership role at UBC as an executive at the UBC Taiwan Association (UBCTA), organizing external events and strengthen the club’s community presence.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-timeline-item>
+                        <div class="timeline-item__marker">
+                            <div class="timeline-item__dot"></div>
+                        </div>
+                        <div class="timeline-item__content">
+                            <div class="timeline-item__date">2025 May</div>
+                            <h3 class="timeline-item__title">High School Graduation</h3>
+                            <p class="timeline-item__description">
+                                Completed the International Baccalaureate (IB) Diploma Programme. Developed strong critical thinking and problem-solving skills                            </p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-timeline-item>
+                        <div class="timeline-item__marker">
+                            <div class="timeline-item__dot"></div>
+                        </div>
+                        <div class="timeline-item__content">
+                            <div class="timeline-item__date">2024 Oct - 2025 Mar</div>
+                            <h3 class="timeline-item__title">Varsity Badmiton</h3>
+                            <p class="timeline-item__description">
+                                Represented the school varsity badminton team; achieved 1st place in city championships and 3rd place in regional competition.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-timeline-item>
+                        <div class="timeline-item__marker">
+                            <div class="timeline-item__dot"></div>
+                        </div>
+                        <div class="timeline-item__content">
+                            <div class="timeline-item__date">2024 June - August</div>
+                            <h3 class="timeline-item__title">Internship at BDA Partners</h3>
+                            <p class="timeline-item__description">
+                                Discovered a clearer direction for my career through hands-on exposure to investment banking, gaining insight into its fast-paced environment and daily operations.                            </p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-timeline-item>
+                        <div class="timeline-item__marker">
+                            <div class="timeline-item__dot"></div>
+                        </div>
+                        <div class="timeline-item__content">
+                            <div class="timeline-item__date">2023 - 2024</div>
+                            <h3 class="timeline-item__title">Badminton Coach</h3>
+                            <p class="timeline-item__description">
+                                Mentored and led younger athletes through training and competition, developing leadership and communication skills while fostering a supportive team environment.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-timeline-item>
+                        <div class="timeline-item__marker">
+                            <div class="timeline-item__dot"></div>
+                        </div>
+                        <div class="timeline-item__content">
+                            <div class="timeline-item__date">2023</div>
+                            <h3 class="timeline-item__title">Opened My First Investment Portfolio</h3>
+                            <p class="timeline-item__description">
+                                Took my first step into finance by opening an investment account, learning the fundamentals of markets, portfolio management, and long-term investing.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-timeline-item>
+                        <div class="timeline-item__marker">
+                            <div class="timeline-item__dot"></div>
+                        </div>
+                        <div class="timeline-item__content">
+                            <div class="timeline-item__date">2023</div>
+                            <h3 class="timeline-item__title">Internship at Yeah Gelato</h3>
+                            <p class="timeline-item__description">
+                                Gained my first real work experience at Yeah Gelato, learning how business operations and marketing come together in a fast-paced environment.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" data-timeline-item>
+                        <div class="timeline-item__marker">
+                            <div class="timeline-item__dot"></div>
+                        </div>
+                        <div class="timeline-item__content">
+                            <div class="timeline-item__date">2021</div>
+                            <h3 class="timeline-item__title">First Entrepreneurial Attempt</h3>
+                            <p class="timeline-item__description">
+                            Launched a small dropshipping project in 8th grade, which introduced me to e-commerce and inspired my later interest in business and technology.                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" data-section class="px-8 md:px-16 lg:px-32 py-20 md:py-28 bg-[#f7f7f7]">
+        <div class="max-w-6xl mx-auto">
+            <header class="text-center mb-16 reveal">
+                <span class="inline-block font-ibm-bold-italic italic text-sm uppercase tracking-[0.3em] text-jacBlack/60 mb-4">My Expertise</span>
+                <h2 class="font-poppins-medium text-[40px] md:text-[56px] leading-tight text-jacText uppercase">
+                    Skills
+                </h2>
+            </header>
+
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <!-- Technical Skills -->
+                <div class="skill-category reveal">
+                    <h3 class="skill-category__title">Technical</h3>
+                    <div class="skill-category__items">
+                        <div class="skill-item">
+                            <span class="skill-item__name">Python</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">JavaScript</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">HTML/CSS</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">React</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Git/GitHub</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Design Skills -->
+                <div class="skill-category reveal">
+                    <h3 class="skill-category__title">Design</h3>
+                    <div class="skill-category__items">
+                        <div class="skill-item">
+                            <span class="skill-item__name">Figma</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">UI/UX Design</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Prototyping</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">User Research</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Design Systems</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Skills -->
+                <div class="skill-category reveal">
+                    <h3 class="skill-category__title">Business</h3>
+                    <div class="skill-category__items">
+                        <div class="skill-item">
+                            <span class="skill-item__name">Financial Analysis</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Market Research</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Data Analysis</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Project Management</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Strategic Planning</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Languages -->
+                <div class="skill-category reveal">
+                    <h3 class="skill-category__title">Languages</h3>
+                    <div class="skill-category__items">
+                        <div class="skill-item">
+                            <span class="skill-item__name">English</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Mandarin</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Vietnamese</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools -->
+                <div class="skill-category reveal">
+                    <h3 class="skill-category__title">Tools</h3>
+                    <div class="skill-category__items">
+                        <div class="skill-item">
+                            <span class="skill-item__name">Microsoft Office</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Excel</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">PowerPoint</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Adobe Creative Suite</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soft Skills -->
+                <div class="skill-category reveal">
+                    <h3 class="skill-category__title">Soft Skills</h3>
+                    <div class="skill-category__items">
+                        <div class="skill-item">
+                            <span class="skill-item__name">Leadership</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Communication</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Team Collaboration</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Problem Solving</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-item__name">Time Management</span>
+                            <div class="skill-item__bar">
+                                <div class="skill-item__fill" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="works" data-section class="px-8 md:px-16 lg:px-32 py-24 bg-gradient-to-b from-white via-[#f8f3ff] to-white">
+        <div class="max-w-6xl mx-auto space-y-16">
+            <header class="space-y-4 text-center reveal">
+                <span class="inline-block font-ibm-bold-italic italic text-sm uppercase tracking-[0.3em] text-jacBlack/60">Selected works</span>
+                <h2 class="font-poppins-medium text-[40px] md:text-[56px] leading-tight text-jacText">A few launches I’m proud of</h2>
+                <p class="max-w-3xl mx-auto text-lg leading-8 text-jacBlack/70">
+                    Partnerships with venture-backed startups and global teams—aligning research, strategy, and craft to ship products
+                    that move the needle.
+                </p>
+            </header>
+
+            <div class="works-grid reveal">
+                <article class="work-card">
+                    <div class="work-card__media">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop" alt="Fintech dashboard interface preview" loading="lazy">
+                    </div>
+                    <div class="work-card__body">
+                        <div>
+                            <p class="work-card__meta">Fintech · 2024</p>
+                            <h3 class="work-card__title">Voyant Markets</h3>
+                        </div>
+                        <p class="work-card__copy">
+                            Built a modular design system and analytics experience for a trading platform handling 120K+ daily sessions.
+                            Result: +18% task completion, +24% NPS.
+                        </p>
+                        <a href="#" class="work-card__link">View case study</a>
+                    </div>
+                </article>
+
+                <article class="work-card">
+                    <div class="work-card__media">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop" alt="Wellness mobile app preview" loading="lazy">
+                    </div>
+                    <div class="work-card__body">
+                        <div>
+                            <p class="work-card__meta">Wellness · 2023</p>
+                            <h3 class="work-card__title">Lumen Health</h3>
+                        </div>
+                        <p class="work-card__copy">
+                            Designed a personalised wellbeing companion across iOS &amp; Android, blending calm visuals with behaviour-changing flows.
+                            Result: +32% weekly retention, App Store Editors’ Choice.
+                        </p>
+                        <a href="#" class="work-card__link">View case study</a>
+                    </div>
+                </article>
+
+                <article class="work-card">
+                    <div class="work-card__media">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop" alt="Climate analytics product preview" loading="lazy">
+                    </div>
+                    <div class="work-card__body">
+                        <div>
+                            <p class="work-card__meta">Climate-tech · 2022</p>
+                            <h3 class="work-card__title">Tidal Zero</h3>
+                        </div>
+                        <p class="work-card__copy">
+                            Led discovery to launch of a carbon insights platform, translating complex supply-chain data into crisp narratives for executives.
+                        </p>
+                        <a href="#" class="work-card__link">View case study</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" data-section class="px-8 md:px-16 lg:px-32 py-20 md:py-28 bg-white">
+        <div class="max-w-3xl mx-auto space-y-6 text-center">
+            <h2 class="font-poppins-medium text-[40px] md:text-[52px] leading-tight text-jacText reveal">Let’s build the next big thing</h2>
+            <p class="text-lg leading-8 text-jacText/80 reveal">Drop your idea in my inbox or schedule a quick discovery call—happy to help scope, prototype, and ship.</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6 reveal">
+                <a href="mailto:jacob360@gmail.com" class="inline-flex items-center gap-3 bg-jacBlack text-white px-8 py-3 rounded-full transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-jacBlack/40">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span class="font-ibm-medium text-lg">jacob360@gmail.com</span>
+                </a>
+                <a href="tel:+770224440505" class="inline-flex items-center gap-3 border border-jacBlack px-8 py-3 rounded-full transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-jacBlack/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <span class="font-ibm-medium text-lg text-jacText">Book a call</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>
